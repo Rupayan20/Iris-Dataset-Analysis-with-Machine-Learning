@@ -77,3 +77,22 @@ X_train, X_test, y_train, y_test = train_test_split(features, targets,
 
 import numpy as np
 X_train, y_train = np.array(X_train, dtype=np.float64), np.array(y_train)
+
+X_test, y_test = np.array(X_test, dtype=np.float64), np.array(y_test)
+
+y_train[:5]
+
+from sklearn.preprocessing import LabelEncoder
+encoder = LabelEncoder()
+
+y_train_encoded = encoder.fit_transform(y_train.reshape((-1, 1)))
+y_test_encoded = encoder.transform(y_test.reshape((-1, 1)))
+
+X_train[:10]
+
+y_train_encoded[:10]
+
+print("The Final Training Data Tensor shape is : {} for the features and {} for the targets.".format(X_train.shape, y_train_encoded.shape))
+
+print("The Final Testing Data Tensor shape is : {} for the features and {} for the targets.".format(X_test.shape, y_test_encoded.shape))
+

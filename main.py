@@ -96,3 +96,50 @@ print("The Final Training Data Tensor shape is : {} for the features and {} for 
 
 print("The Final Testing Data Tensor shape is : {} for the features and {} for the targets.".format(X_test.shape, y_test_encoded.shape))
 
+
+# Machine Learning Model Designing - The K-Nearest-Neighbors Classifier Algorithm.
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn import metrics
+from tqdm import tqdm
+
+k_range = range(1, 100+1)
+scores = {}
+scores_list = []
+for k in tqdm(k_range) :
+    knn_model = KNeighborsClassifier(n_neighbors=k)
+    knn_model.fit(X_train, y_train_encoded)
+    y_prediction = knn_model.predict(X_test)
+    scores[k] = metrics.accuracy_score(y_test_encoded, y_prediction)
+    scores_list.append(metrics.accuracy_score(y_test_encoded, y_prediction))
+      
+from matplotlib import pyplot as plt
+plt.figure(figsize=(5, 5))
+plt.plot(k_range, scores_list)
+plt.xlabel("Value of K for the KNN Classifier")
+plt.ylabel("Testing Accuracy")
+
+knn = KNeighborsClassifier(n_neighbors=39)
+knn.fit(X_train, y_train_encoded)
+
+output_prediction = knn.predict(X_test)
+
+output_prediction
+
+classes = {0 : "Iris-Setosa", 1 : "Iris-Versicolor", 2 : "Iris-Verginica"}
+
+X_new_samples = [
+    [2.5, 2.555, 3.6, 4.8],
+    [2.5, 3.25, 4.15, 6.3], 
+    [0.3, 0.5, 1.75, 3.25],
+    [0.45, 2.5, 1.6, 0.25],
+    [6, 2, 5, 8],
+    [2.75, 4.25, 3.15, 0.25],
+    [1.25, 1.25, 1.25, 1.25],
+    [3.75, 0.25, 4.35, 1.25]
+]
+
+y_predict = knn.predict(X_new_samples)
+print([classes[y_predict[i]] for i in range(len(y_predict))])
+
+accuracy = metrics.accuracy_score(y_test_encoded, output_prediction)
+print("The Accuracy of the Trained KNN Classifier is : {} % .".format(accuracy * 100))
